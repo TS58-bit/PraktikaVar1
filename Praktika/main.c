@@ -126,9 +126,58 @@ void manualInput() {
     printf("Массив введён.\n");
 }
 
+void generateRandom() {
+    int size, minVal, maxVal;
+    printf("Размер: "); scanf("%d", &size);
+    if (size <= 0) {
+        printf("Размер должен быть положительным.\n");
+        return;
+    }
+    printf("Минимум: "); scanf("%d", &minVal);
+    printf("Максимум: "); scanf("%d", &maxVal);
+    if (minVal > maxVal) {
+        printf("Минимум не может быть больше максимума.\n");
+        return;
+    }
+    int* temp = (int*)malloc(size * sizeof(int));
+    if (!temp) {
+        printf("Ошибка памяти.\n");
+        return;
+    }
+    srand((unsigned)time(NULL));
+    for (int i = 0; i < size; i++)
+        temp[i] = minVal + rand() % (maxVal - minVal + 1);
+    freeArray();
+    arr = temp;
+    n = size;
+    printf("Сгенерировано %d чисел в диапазоне [%d, %d].\n", n, minVal, maxVal);
+}
 
+void sortArray() {
+    if (n == 0 || !arr) {
+        printf("Массив пуст.\n");
+        return;
+    }
+    int direction;
+    printf("Выберите направление сортировки:\n");
+    printf("1 - по возрастанию\n");
+    printf("2 - по убыванию\n");
+    printf("Ваш выбор: ");
+    scanf("%d", &direction);
+    int ascending = (direction == 1) ? 1 : 0; // по умолчанию убывание, если ввели не 1
 
+    printf("Исходный массив:\n");
+    printArray(arr, n);
 
+    clock_t start = clock();
+    bubbleSort(arr, n, &swapCount, ascending);
+    clock_t end = clock();
+
+    printf("Отсортированный массив (%s):\n", ascending ? "по возрастанию" : "по убыванию");
+    printArray(arr, n);
+    printf("Количество перестановок: %lld\n", swapCount);
+    printf("Время выполнения: %f сек\n", (double)(end - start) / CLOCKS_PER_SEC);
+}
 
 void showMenu() {
     printf("\n=== МЕНЮ ===\n");
