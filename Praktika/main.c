@@ -103,7 +103,24 @@ int loadFromFile() {
     return 1;
 }
 
-
+int saveToFile() {
+    if (n == 0 || !arr) {
+        printf("Массив пуст, нечего сохранять.\n");
+        return 0;
+    }
+    FILE* f = fopen("output.txt", "w");
+    if (!f) {
+        printf("Ошибка создания output.txt.\n");
+        return 0;
+    }
+    for (int i = 0; i < n; i++) {
+        fprintf(f, "%d", arr[i]);
+        if (i < n - 1) fprintf(f, ", ");
+    }
+    fclose(f);
+    printf("Массив сохранён в output.txt.\n");
+    return 1;
+}
 
 void manualInput() {
     int size;
