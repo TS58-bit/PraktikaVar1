@@ -162,8 +162,12 @@ void generateRandom() {
         return;
     }
     srand((unsigned)time(NULL));
-    for (int i = 0; i < size; i++)
-        temp[i] = minVal + rand() % (maxVal - minVal + 1);
+    //увеличен диапазон генерации чисел, чтобы в массивах большого размера числа реже повторялись
+    long long range = (long long)maxVal - minVal + 1;
+    for (int i = 0; i < size; i++) {
+        unsigned long long Randlong = ((unsigned long long)rand() << 30) | ((unsigned long long)rand() << 15) | ((unsigned long long)rand());
+        temp[i] = (int)(minVal + (long long)(Randlong % (unsigned long long)range));
+    }
     freeArray();
     arr = temp;
     n = size;
